@@ -2,20 +2,38 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Admin • BikEService</title>
+<title>Admin | BikEService</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<script>
+if (sessionStorage.getItem("isAdmin") !== "true") {
+  location.href = "index.html";
+}
+</script>
+
 <div class="chat admin">
-  <div class="header">Панель поддержки</div>
+  <div class="header">
+    Поддержка
+    <button onclick="logout()">Выйти</button>
+  </div>
+
   <div id="messages" class="messages"></div>
+
   <div class="input">
-    <input id="text" placeholder="Ответить">
-    <button id="send">Отправить</button>
+    <input id="text" placeholder="Ответ поддержки">
+    <button id="send">➤</button>
   </div>
 </div>
 
 <script type="module" src="admin.js"></script>
+<script>
+function logout() {
+  sessionStorage.removeItem("isAdmin");
+  location.href = "index.html";
+}
+</script>
+
 </body>
 </html>
