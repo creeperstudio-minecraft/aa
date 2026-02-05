@@ -1,39 +1,33 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<title>Admin | BikEService</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+import { db } from "./firebase.js";
+import { ref, push, onChildAdded } from
+  "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-<script>
-if (sessionStorage.getItem("isAdmin") !== "true") {
-  location.href = "index.html";
+const messagesRef = ref(db, "chats/global/messages");
+const messages = document.getElementById("messages");
+const input = document.getElementById("text");
+
+onChildAdded(messagesRef, snap => {
+  const m = snap.val();
+  const div = document.createElement("div");
+  div.className = "msg " + m.from;
+  div.innerHTML = `<span class="name">${m.name}</span>${m.text}`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+});
+
+document.getElementById("send").onclick = send;
+input.addEventListener("keydown", e => e.key === "Enter" && send());
+
+function send() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  push(messagesRef, {
+    from: "admin",
+    name: "Поддержка",
+    text,
+    time: Date.now()
+  });
+
+  input.value = "";
 }
-</script>
-
-<div class="chat admin">
-  <div class="header">
-    Поддержка
-    <button onclick="logout()">Выйти</button>
-  </div>
-
-  <div id="messages" class="messages"></div>
-
-  <div class="input">
-    <input id="text" placeholder="Ответ поддержки">
-    <button id="send">➤</button>
-  </div>
-</div>
-
-<script type="module" src="admin.js"></script>
-<script>
-function logout() {
-  sessionStorage.removeItem("isAdmin");
-  location.href = "index.html";
-}
-</script>
-
-</body>
-</html>
