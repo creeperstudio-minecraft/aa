@@ -3,7 +3,7 @@ import { ref, push, onChildAdded } from
   "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const ADMIN_CMD = "/admin.pref = 288M2P00K720";
-const chatId = "global";
+const chatId = `user_${userId}`;
 const messagesRef = ref(db, `chats/${chatId}/messages`);
 
 let userId = localStorage.userId;
@@ -59,4 +59,5 @@ function send() {
 
   input.value = "";
 }
+
 
