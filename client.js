@@ -28,16 +28,28 @@ document.getElementById("send").onclick = send;
 input.addEventListener("keydown", e => e.key === "Enter" && send());
 
 function send() {
-  const text = input.value.trim();
+  let text = input.value;
+
   if (!text) return;
 
-  // 🔐 ВХОД В АДМИНКУ
-  if (text === ADMIN_CMD) {
-    sessionStorage.setItem("isAdmin", "true");
-    location.href = "admin.html";
+  // нормализуем ввод
+  text = text.replace(/\s+/g, " ").trim();
+
+  // 🔐 КОМАНДА АДМИНА
+  if (text.startsWith("/admin.pref")) {
+    if (text === "/admin.pref = 288M2P00K720") {
+      sessionStorage.setItem("isAdmin", "true");
+      alert("Вход в админку выполнен");
+      window.location.href = "admin.html";
+    } else {
+      alert("Неверный admin-ключ");
+    }
+
+    input.value = "";
     return;
   }
 
+  // обычное сообщение
   push(messagesRef, {
     from: "user",
     name: `Пользователь #${userId}`,
@@ -47,3 +59,4 @@ function send() {
 
   input.value = "";
 }
+
