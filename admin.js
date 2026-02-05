@@ -1,35 +1,39 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Admin | BikEService</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDaxE-MsBKlpUZEkmAi3hazohQS0So-yaM",
-  databaseURL: "https://bikeservices-6c049-default-rtdb.firebaseio.com",
-};
+<script>
+if (sessionStorage.getItem("isAdmin") !== "true") {
+  location.href = "index.html";
+}
+</script>
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+<div class="chat admin">
+  <div class="header">
+    Поддержка
+    <button onclick="logout()">Выйти</button>
+  </div>
 
-const messagesRef = ref(db, "chats/global-chat/messages");
-const messages = document.getElementById("messages");
+  <div id="messages" class="messages"></div>
 
-onChildAdded(messagesRef, snap => {
-  const m = snap.val();
-  const div = document.createElement("div");
-  div.className = "msg " + m.from;
-  div.innerHTML = `<b>${m.name}</b><br>${m.text}`;
-  messages.appendChild(div);
-});
+  <div class="input">
+    <input id="text" placeholder="Ответ поддержки">
+    <button id="send">➤</button>
+  </div>
+</div>
 
-document.getElementById("send").onclick = () => {
-  const text = document.getElementById("text").value.trim();
-  if (!text) return;
+<script type="module" src="admin.js"></script>
+<script>
+function logout() {
+  sessionStorage.removeItem("isAdmin");
+  location.href = "index.html";
+}
+</script>
 
-  push(messagesRef, {
-    from: "admin",
-    name: "Поддержка",
-    text,
-    time: Date.now()
-  });
-
-  document.getElementById("text").value = "";
-};
+</body>
+</html>
