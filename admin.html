@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Admin | BikEService</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+if (sessionStorage.getItem("isAdmin") !== "true") {
+  location.href = "index.html";
+}
+</script>
+
+<div class="admin-layout">
+
+  <div class="sidebar" id="users"></div>
+
+  <div class="chat admin">
+    <div class="header">
+      <span id="chatTitle">Выберите чат</span>
+      <button id="closeChat">Закрыть</button>
+    </div>
+
+    <div id="messages" class="messages"></div>
+
+    <div class="input">
+      <input id="text" placeholder="Ответ поддержки">
+      <button id="send">➤</button>
+    </div>
+  </div>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
